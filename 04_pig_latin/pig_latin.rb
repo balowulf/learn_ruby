@@ -1,17 +1,14 @@
 def translate(str)
-    new_str = str.split(" ")
-    vowels = ["a", "e", "i", "o", "u"]
-    new_str.each do |word|
-        if vowels.include? word[0]
-            word << "ay"
-        else
-            # block below yields "errychay" from "cherry"
-            ary = word.split("")
-            newary = ary.shift(ary.index { |x| vowels.include? x })
-            newary << "ay"
-            ary << newary
-            return ary.join("")
+    words = str.split(' ')
+    words = words.map do |word|
+        if word[0].chr == 'q' 
+            parts = ['qu', word.slice(2, word.length - 2)]
+        elsif word[1].chr == 'q'
+            parts = [word[word.index('q') - 1] + "qu", word.slice(3, word.length - 2)]
+        else 
+            parts = word.split(/([aeiou].*)/)     
         end
+        parts[1] + parts[0] + "ay"
     end
-    new_str = new_str.join(" ")
+    words.join(' ')
 end
